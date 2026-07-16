@@ -3,12 +3,12 @@ import { getDependencies, getGraph } from "./graph.ts";
 import { up, fromProDir } from "./util.ts";
 
 type ConfigSch = {
-	"source_dir":string
 	"aliases":Record<string,string>
 	"root_name":string
 }
 
 const config:ConfigSch = JSON.parse(Deno.readTextFileSync(fromProDir("./config.json")))
+const sourceDir = fromProDir("./library/src")
 
 const arg = Deno.args[0]
 if (arg === "" || arg === undefined) Deno.exit()
@@ -18,7 +18,7 @@ if (arg === "list") {
 	Deno.exit()
 }
 if (arg === "src") {
-	console.log(getGraph().map(n => relative(config.source_dir, n.file)));
+	console.log(getGraph().map(n => relative(sourceDir, n.file)));
 	Deno.exit()
 }
 
@@ -27,12 +27,12 @@ const file = (() => {
 
 	if (file === undefined) Deno.exit()
 
-	return join(config.source_dir, file)
+	return join(sourceDir, file)
 })()
 
 const info = await Deno.stat(file)
-if (!info.isFifo) {
-	console.error("broken file path")
+if (!info.isFile) {
+	console.error("broken file path", file)
 	Deno.exit(404)
 }
 
@@ -44,7 +44,7 @@ const dry = Deno.args.includes("-dry")
 
 const res = prompt(
 `are you sure you want to copy the files in "${rootDir}" from:
-${files.map(f => relative(config.source_dir, f)).join(" ")}
+${files.map(f => relative(sourceDir, f)).join(" ")}
 y / n${dry ? ", dry run" : ""}`
 )
 
@@ -59,7 +59,7 @@ if (!dry) try {
 }
 
 for (const source of files) {
-	const rel = relative(config.source_dir, source);
+	const rel = relative(sourceDir, source);
 	const dest = join(rootDir, rel);
 	const dir = up(dest)
 
