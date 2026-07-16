@@ -21,6 +21,13 @@ const file = (() => {
 	return join(config.source_dir, file)
 })()
 
+const info = await Deno.stat(file)
+if (!info.isFifo) {
+	console.error("broken file path")
+	Deno.exit(404)
+}
+
+
 const files = Array.from(getDependencies(file))
 const rootDir = join(Deno.cwd(), "src", config.root_name)
 
