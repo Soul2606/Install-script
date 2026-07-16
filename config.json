@@ -1,6 +1,6 @@
 {
 	"source_dir":"/home/sondre/Coding/typescript/RnD & prototypes/Install-script/library/src",
-	"dir_name":"lib",
+	"root_name":"lib",
 	"aliases":{
 		"dom.util":"dom/util.ts",
 		"dom.can":"dom/canvas.ts",

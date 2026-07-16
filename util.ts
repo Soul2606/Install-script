@@ -1,3 +1,4 @@
+import { fromFileUrl } from "@std/path";
 
 export const pdir = new URL(".", import.meta.url); //"~/Coding/typescript/RnD & prototypes/Install-script"
 
@@ -43,6 +44,10 @@ export function canonicalImport(path:string) {
 	if (path.endsWith(".js")) return path.slice(0, -3) + ".ts"
 	if (path.endsWith(".ts")) return path
 	return path + ".ts"
+}
+
+export function fromProDir(path:string) {
+	return fromFileUrl(new URL(path, pdir))
 }
 
 /*

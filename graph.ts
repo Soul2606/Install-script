@@ -1,5 +1,4 @@
-import { canonicalImport, pdir, readDirRecurse, resolve, up } from "./util.ts";
-import { fromFileUrl } from "@std/path";
+import { canonicalImport, readDirRecurse, resolve, up, fromProDir } from "./util.ts";
 
 type Node = {
 	file: string
@@ -10,7 +9,7 @@ const graph:Node[] = []
 
 const regex = /^import\s+(?:.+?\s+from\s+)?["']([^"']+)["']/gm
 
-for(const path of readDirRecurse(fromFileUrl(new URL("./library/src", pdir))).map(canonicalImport)) {
+for(const path of readDirRecurse(fromProDir("./library/src")).map(canonicalImport)) {
 	const text = Deno.readTextFileSync(path)
 	const node:Node = {
 		file:path,

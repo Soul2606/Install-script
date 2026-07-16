@@ -1,14 +1,14 @@
-import { fromFileUrl, join, basename, relative } from "@std/path";
+import { join, relative } from "@std/path";
 import { getDependencies } from "./graph.ts";
-import { pdir, up } from "./util.ts";
+import { up, fromProDir } from "./util.ts";
 
 type ConfigSch = {
 	"source_dir":string
 	"aliases":Record<string,string>
-	"dir_name":string
+	"root_name":string
 }
 
-const config:ConfigSch = JSON.parse(Deno.readTextFileSync(fromFileUrl(new URL("./config.json", pdir))))
+const config:ConfigSch = JSON.parse(Deno.readTextFileSync(fromProDir("./config.json")))
 
 const arg = Deno.args[0]
 if (arg === "" || arg === undefined) Deno.exit()
@@ -22,23 +22,32 @@ const file = (() => {
 })()
 
 const files = Array.from(getDependencies(file))
-const libDir = join(Deno.cwd(), config.dir_name)
-const res = prompt(`are you sure you want to copy the files in "${libDir}":\n${files.join(" ")}\n y / n\n`)
+const rootDir = join(Deno.cwd(), "src", config.root_name)
 
-let dry = false
-if (res === "dry") {
-	dry = true
-} else if (res !== "y") Deno.exit()
+const dry = Deno.args.includes("-dry")
 
-console.log("Making root directory at:", libDir);
-if (!dry) Deno.mkdirSync(libDir)
+const res = prompt(
+`are you sure you want to copy the files in "${rootDir}" from:
+${files.map(f => relative(config.source_dir, f)).join(" ")}
+y / n${dry ? ", dry run" : ""}`
+)
+
+if (res !== "y") Deno.exit()
+
+console.log("Making root directory at:", rootDir);
+if (!dry) try {
+	Deno.mkdirSync(rootDir)
+} catch (_error) {
+	console.error("Failed to create root directory, directory might already exist or you are missing the src subdirectory.")
+	Deno.exit()
+}
 
 for (const source of files) {
 	const rel = relative(config.source_dir, source);
-	const dest = join(libDir, rel);
+	const dest = join(rootDir, rel);
 	const dir = up(dest)
 
-	const relSrc = fromFileUrl(new URL(source, pdir))
+	const relSrc = fromProDir(source)
 
 	console.log("setting up directories at:", dir, "copying file at:", dest, "from source:", relSrc);
 	
@@ -49,3 +58,6 @@ for (const source of files) {
 		dest
 	)
 }
+
+console.log(files.length, "packages installed");
+
