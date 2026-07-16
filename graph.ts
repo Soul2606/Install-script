@@ -41,3 +41,9 @@ export function getDependencies(path:string, checked = new Set<Node>()):Set<stri
 
 	return dependencies
 }
+
+
+
+export function getGraph() {
+	return structuredClone(graph)
+}

@@ -1,5 +1,5 @@
 import { join, relative } from "@std/path";
-import { getDependencies } from "./graph.ts";
+import { getDependencies, getGraph } from "./graph.ts";
 import { up, fromProDir } from "./util.ts";
 
 type ConfigSch = {
@@ -12,6 +12,15 @@ const config:ConfigSch = JSON.parse(Deno.readTextFileSync(fromProDir("./config.j
 
 const arg = Deno.args[0]
 if (arg === "" || arg === undefined) Deno.exit()
+
+if (arg === "list") {
+	console.log(Object.keys(config.aliases).join(", "))
+	Deno.exit()
+}
+if (arg === "src") {
+	console.log(getGraph().map(n => relative(config.source_dir, n.file)));
+	Deno.exit()
+}
 
 const file = (() => {
 	const file = config.aliases[arg]
