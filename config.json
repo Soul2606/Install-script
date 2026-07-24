@@ -6,6 +6,7 @@
 		"data.json":"data/json/utils.ts",
 		"data.arrayFromTo":"data/arrayFromTo.ts",
 		"data.hfunc":"data/high-order-functions.ts",
+		"data.memo":"data/memo.ts",
 		"math.vec2d":"math/vector2d.ts",
 		"math.util":"math/util.ts",
 		"math.rng":"math/rng.ts",

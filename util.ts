@@ -50,14 +50,11 @@ export function fromProDir(path:string) {
 	return fromFileUrl(new URL(path, pdir))
 }
 
-/*
-readDirRecurse("./library/src").forEach(file => console.log(file))
+export type ConfigSch = {
+	"aliases":Record<string,string>
+	"root_name":string
+}
 
-console.log("---");
+export const config:ConfigSch = JSON.parse(Deno.readTextFileSync(fromProDir("./config.json")))
 
-console.log(resolve("./library/src/data/json", "../../types.ts"));
-
-console.log("---");
-
-console.log(up("./library/src/data/json", 2));
-*/
+export const sourceDir = fromProDir("./library/src")
