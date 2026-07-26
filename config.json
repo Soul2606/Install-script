@@ -13,6 +13,7 @@
 		"math.geo":"math/geometry.ts",
 		"math.line":"math/line.ts",
 		"math.fract":"math/fraction.ts",
-		"ev.signal":"events/signal.ts"
+		"ev.signal":"events/signal.ts",
+		"ev.forever":"events/forever.ts"
 	}
 }
