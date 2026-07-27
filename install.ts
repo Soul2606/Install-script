@@ -2,6 +2,7 @@ import { join, relative } from "@std/path";
 import { getDependencies, getGraph } from "./graph.ts";
 import { up, fromProDir, config, sourceDir } from "./util.ts";
 import * as Test from "./test.ts";
+import { existsSync } from "jsr:@std/fs/exists";
 
 
 const arg = Deno.args[0]
@@ -49,11 +50,14 @@ y / n${dry ? ", dry run" : ""}`
 if (res !== "y") Deno.exit()
 
 console.log("Making root directory at:", rootDir);
+if (!existsSync("./src")) {
+	console.error("Directory ./src does not exist")
+	Deno.exit()
+}
 if (!dry) try {
-	Deno.mkdirSync(rootDir)
+	Deno.mkdirSync(rootDir, {recursive:true})
 } catch (_error) {
 	console.error("Failed to create root directory, directory might already exist or you are missing the src subdirectory.")
-	Deno.exit()
 }
 
 for (const source of files) {
