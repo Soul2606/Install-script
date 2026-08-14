@@ -4,7 +4,7 @@
 		"dom.util":"dom/util.ts",
 		"dom.can":"dom/canvas.ts",
 		"data.json":"data/json/utils.ts",
-		"data.arrayFromTo":"data/arrayFromTo.ts",
+		"data.arrayft":"data/arrayFromTo.ts",
 		"data.hfunc":"data/high-order-functions.ts",
 		"data.memo":"data/memo.ts",
 		"math.vec2d":"math/vector2d.ts",
@@ -14,6 +14,7 @@
 		"math.line":"math/line.ts",
 		"math.fract":"math/fraction.ts",
 		"math.area2d":"math/area2d.ts",
+		"math.greedrect":"math/greedyRect.ts",
 		"ev.signal":"events/signal.ts",
 		"ev.forever":"events/forever.ts"
 	}
