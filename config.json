@@ -4,6 +4,7 @@
 		"dom.util":"dom/util.ts",
 		"dom.can":"dom/canvas.ts",
 		"data.json":"data/json/utils.ts",
+		"data.json.valid":"data/json/validator.ts",
 		"data.arrayft":"data/arrayFromTo.ts",
 		"data.hfunc":"data/high-order-functions.ts",
 		"data.memo":"data/memo.ts",
