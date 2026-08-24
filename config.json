@@ -6,6 +6,7 @@
 		"data.json":"data/json/utils.ts",
 		"data.json.valid":"data/json/validator.ts",
 		"data.arrayft":"data/arrayFromTo.ts",
+		"data.arrand":"data/arrayRandom.ts",
 		"data.hfunc":"data/high-order-functions.ts",
 		"data.memo":"data/memo.ts",
 		"math.vec2d":"math/vector2d.ts",
