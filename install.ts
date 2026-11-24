@@ -2,7 +2,7 @@ import { join, relative } from "@std/path";
 import { getDependencies, getGraph } from "./graph.ts";
 import { up, fromProDir, config, sourceDir } from "./util.ts";
 import * as Test from "./test.ts";
-import { existsSync } from "jsr:@std/fs/exists";
+import { existsSync } from "@std/fs/exists";
 
 
 const arg = Deno.args[0]
@@ -69,11 +69,15 @@ for (const source of files) {
 
 	console.log("setting up directories at:", dir, "copying file at:", dest, "from source:", relSrc);
 	
+	if (existsSync(dest)) {
+		console.warn("file", dest, "already exists.")
+		continue
+	}
 	if (dry) continue
 	Deno.mkdirSync(dir, {recursive:true})
 	Deno.copyFileSync(
 		relSrc,
-		dest
+		dest,
 	)
 }
 
