@@ -1,17 +1,14 @@
 import { fromFileUrl } from "@std/path";
+import { walk } from "@std/fs";
 
 export const pdir = new URL(".", import.meta.url); //"~/Coding/typescript/RnD & prototypes/Install-script"
 
-export function readDirRecurse(path:string) {
-	const files:string[] = []
-	recurse(path)
-	function recurse(path:string) {
-		for (const entry of Deno.readDirSync(path)) {
-			if (entry.isFile) files.push(path + "/" + entry.name);
-			if (entry.isDirectory) recurse(path + "/" + entry.name)
-		}
+export async function readDirRecurse(path:string) {
+	const paths:{name:string, path:string}[] = []
+	for await (const ent of walk(path)) {
+		if (ent.isFile) paths.push({name:ent.name, path:ent.path})
 	}
-	return files
+	return paths
 }
 
 export function resolve(path:string, relative:string) {

@@ -9,7 +9,7 @@ const graph:Node[] = []
 
 const regex = /^import\s+(?:.+?\s+from\s+)?["']([^"']+)["']/gm
 
-for(const path of readDirRecurse(fromProDir("./library/src")).map(canonicalImport)) {
+for(const path of (await readDirRecurse(fromProDir("./library/src"))).map(ent => canonicalImport(ent.path))) {
 	const text = Deno.readTextFileSync(path)
 	const node:Node = {
 		file:path,
